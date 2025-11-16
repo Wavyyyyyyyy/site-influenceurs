@@ -40,7 +40,7 @@
     .cart-btn{background:var(--white);color:var(--bg);padding:8px 12px;border-radius:999px;font-weight:700;border:none;cursor:pointer}
     .cart-count{background:#ff3b30;color:#fff;padding:2px 8px;border-radius:999px;margin-left:8px;font-size:12px;font-weight:800}
 
-    /* Modal bg with blur effect (backdrop-filter) */
+    /* Modal bg with blur effect */
     .modal-bg{display:none;position:fixed;inset:0;z-index:80;align-items:center;justify-content:center;background:rgba(0,0,0,0.55);backdrop-filter:blur(6px)}
     .modal{width:92%;max-width:800px;background:linear-gradient(180deg,#ffffff 0%, #f7f7f7 100%);color:#000;border-radius:14px;padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start;
           transform:translateY(18px) scale(.96);opacity:0;transition:all .36s cubic-bezier(.2,.9,.2,1)}
@@ -53,7 +53,7 @@
     .btn-outline{background:transparent;border:1px solid #111;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:700}
     .btn-primary{background:#111;color:#fff;border:none;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:800}
 
-    /* Cart modal (right) */
+    /* Cart modal (side) */
     .cart-modal{position:fixed;right:20px;top:20px;width:360px;background:#fff;color:#000;border-radius:12px;padding:14px;box-shadow:0 30px 60px rgba(0,0,0,0.6);z-index:90;display:none}
     .cart-modal h3{margin:0 0 10px}
     .cart-items{max-height:320px;overflow:auto;margin-top:8px}
@@ -63,7 +63,10 @@
 
     /* Contact + footer */
     .info{max-width:1200px;margin:32px auto;padding:0 4%;color:var(--muted)}
-    footer{margin-top:32px;padding:20px 4%;border-top:1px solid rgba(255,255,255,0.04);color:var(--muted);display:flex;justify-content:space-between;align-items:center}
+    footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;padding:20px 4%;border-top:1px solid rgba(255,255,255,0.04);color:var(--muted)}
+
+    /* Mini-cart floating button */
+    #mini-cart{position:fixed;bottom:20px;right:20px;z-index:99}
 
     /* responsive */
     @media(max-width:900px){
@@ -71,7 +74,6 @@
       .modal img{height:240px}
       .cart-modal{width:92%;right:4%;top:auto;bottom:20px}
     }
-
   </style>
 </head>
 <body>
@@ -82,7 +84,6 @@
       <div class="brand">T&amp;H</div>
       <div class="subtitle">Site de revente de luxe — articles authentiques & vérifiés</div>
     </div>
-
     <div class="nav">
       <input class="search" id="search" placeholder="Rechercher un produit..." />
       <button class="cart-btn" id="open-cart">Panier <span class="cart-count" id="cart-count">0</span></button>
@@ -94,7 +95,7 @@
     <div class="hero-left">
       <div class="eyebrow">Revente de luxe</div>
       <h1>Vêtements, sneakers et accessoires haut de gamme</h1>
-      <p class="lead">T&H est une plateforme de revente de luxe spécialisée : chaque article est vérifié, authentique et proposé par des vendeurs sélectionnés. Parfait pour ton projet — présente la marque, la stratégie d'influence et la boutique.</p>
+      <p class="lead">T&H est une plateforme de revente de luxe spécialisée : chaque article est vérifié, authentique et proposé par des vendeurs sélectionnés.</p>
     </div>
   </section>
 
@@ -102,7 +103,6 @@
   <section>
     <div class="products" id="products">
 
-      <!-- Cards : tu peux changer l'image en remplaçant le lien dans data-image et dans <img src=""> -->
       <div class="card" data-id="lv-bonnet" data-name="Bonnet Louis Vuitton" data-price="350" data-image="https://fr.louisvuitton.com/images/is/image/lv/1/PP_VP_L/louis-vuitton-bonnet-neo-petit-damier--M77985_PM2_Front%20view.png?wid=2400&hei=2400" data-desc="Bonnet de luxe en laine premium.">
         <img src="https://fr.louisvuitton.com/images/is/image/lv/1/PP_VP_L/louis-vuitton-bonnet-neo-petit-damier--M77985_PM2_Front%20view.png?wid=2400&hei=2400" alt="">
         <h3>Bonnet LV</h3>
@@ -161,7 +161,7 @@
     </div>
   </div>
 
-  <!-- CART (side small modal) -->
+  <!-- CART (side modal) -->
   <div class="cart-modal" id="cart-modal" aria-hidden="true">
     <h3>Votre panier</h3>
     <div class="cart-items" id="cart-items"></div>
@@ -174,171 +174,197 @@
     </div>
   </div>
 
+  <!-- Mini cart floating button -->
+  <button id="mini-cart" class="cart-btn">🛒 <span id="mini-cart-count">0</span></button>
+
   <!-- INFO + FOOTER -->
   <div class="info">
     <h3 style="color:var(--white)">À propos</h3>
     <p class="small">T&H est une plateforme de revente de luxe destinée à proposer des pièces premium, contrôlées et authentifiées. Ce site est un projet scolaire / démonstration et ne réalise pas de transactions réelles.</p>
+
+    <div class="help-sections" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:24px">
+      <div>
+        <h4 style="color:var(--white)">Aide & Service</h4>
+        <p class="small">Service client disponible 7j/7 au +33 9 77 40 40 77, par WhatsApp ou email.</p>
+        <ul class="small">
+          <li>FAQ</li>
+          <li>Conseils d’entretien</li>
+          <li>Caractéristiques environnementales</li>
+          <li>Trouver un magasin ou restaurant</li>
+          <li>Prendre un rendez-vous en magasin</li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="color:var(--white)">Services</h4>
+        <ul class="small">
+          <li>Réparations</li>
+          <li>Personnalisation</li>
+          <li>L'Art d'Offrir</li>
+          <li>Téléchargez nos applications</li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="color:var(--white)">La Maison</h4>
+        <ul class="small">
+          <li>Défilés</li>
+          <li>Arts & Culture</li>
+          <li>Développement Durable</li>
+          <li>Fondation Louis Vuitton</li>
+          <li>Carrière</li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="color:var(--white)">Réseaux & Newsletter</h4>
+        <p class="small">Souscrivez à la Newsletter pour recevoir les dernières actualités et pré-lancements.</p>
+        <ul class="small">
+          <li>Réseaux sociaux</li>
+          <li>Plan du Site</li>
+          <li>Mentions légales</li>
+          <li>Accessibilité : partiellement conforme</li>
+          <li>Cookies</li>
+          <li>Pays de livraison : France</li>
+        </ul>
+      </div>
+    </div>
   </div>
 
   <footer>
     <div>© 2025 — T&H Revente de luxe</div>
     <div class="small">Site de revente • Authenticité vérifiée</div>
+    <button class="cart-btn" id="open-cart-footer">Panier <span class="cart-count" id="cart-count-footer">0</span></button>
   </footer>
 
-<script>
-  // --- UTILITAIRES PANIER (localStorage) ---
-  const STORAGE_KEY = 'th_cart_v1';
-  function readCart(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }catch(e){ return []; } }
-  function saveCart(cart){ localStorage.setItem(STORAGE_KEY, JSON.stringify(cart)); renderCartCount(); renderCartItems(); }
+  <script>
+    // --- UTILITAIRES PANIER ---
+    const STORAGE_KEY = 'th_cart_v1';
+    function readCart(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }catch(e){ return []; } }
+    function saveCart(cart){ localStorage.setItem(STORAGE_KEY, JSON.stringify(cart)); renderCartCount(); renderCartItems(); }
 
-  function addToCart(item){
-    const cart = readCart();
-    const existing = cart.find(i=>i.id===item.id);
-    if(existing) existing.qty += item.qty;
-    else cart.push(item);
-    saveCart(cart);
-  }
-  function removeFromCart(id){
-    let cart = readCart().filter(i=>i.id !== id);
-    saveCart(cart);
-  }
-  function updateQty(id, qty){
-    const cart = readCart();
-    const it = cart.find(i=>i.id===id);
-    if(!it) return;
-    it.qty = qty;
-    if(it.qty <=0) removeFromCart(id);
-    else saveCart(cart);
-  }
-  function cartTotal(){
-    return readCart().reduce((s,i)=>s + i.price * i.qty,0);
-  }
-  function cartCount(){
-    return readCart().reduce((s,i)=>s + i.qty,0);
-  }
+    function addToCart(item){
+      const cart = readCart();
+      const existing = cart.find(i=>i.id===item.id);
+      if(existing) existing.qty += item.qty;
+      else cart.push(item);
+      saveCart(cart);
+    }
+    function removeFromCart(id){
+      let cart = readCart().filter(i=>i.id !== id);
+      saveCart(cart);
+    }
+    function updateQty(id, qty){
+      const cart = readCart();
+      const it = cart.find(i=>i.id===id);
+      if(!it) return;
+      it.qty = qty;
+      if(it.qty <=0) removeFromCart(id);
+      else saveCart(cart);
+    }
+    function cartTotal(){ return readCart().reduce((s,i)=>s + i.price * i.qty,0); }
+    function cartCount(){ return readCart().reduce((s,i)=>s + i.qty,0); }
 
-  // --- RENDER ---
-  const cartCountEl = document.getElementById('cart-count');
-  const cartItemsEl = document.getElementById('cart-items');
-  const cartTotalEl = document.getElementById('cart-total');
-  function renderCartCount(){ cartCountEl.textContent = cartCount(); }
-  function renderCartItems(){
-    const cart = readCart();
-    if(cart.length===0){ cartItemsEl.innerHTML = '<div class="small">Votre panier est vide.</div>'; cartTotalEl.textContent='0 €'; return; }
-    cartItemsEl.innerHTML = cart.map(i=>`
-      <div class="cart-item">
-        <div>
-          <div style="font-weight:700">${i.name}</div>
-          <div class="small">${i.price} €</div>
-        </div>
-        <div class="qty">
-          <button class="btn-outline" onclick="decrementQty('${i.id}')">-</button>
-          <div>${i.qty}</div>
-          <button class="btn-outline" onclick="incrementQty('${i.id}')">+</button>
-          <button class="btn-outline" onclick="removeFromCart('${i.id}')">✕</button>
-        </div>
-      </div>`).join('');
-    cartTotalEl.textContent = cartTotal() + ' €';
-  }
+    // --- RENDER ---
+    const cartCountEl = document.getElementById('cart-count');
+    const cartCountFooter = document.getElementById('cart-count-footer');
+    const miniCartCount = document.getElementById('mini-cart-count');
+    const cartItemsEl = document.getElementById('cart-items');
+    const cartTotalEl = document.getElementById('cart-total');
 
-  function incrementQty(id){ const cart = readCart(); const it = cart.find(x=>x.id===id); if(it){ it.qty++; saveCart(cart);} }
-  function decrementQty(id){ const cart = readCart(); const it = cart.find(x=>x.id===id); if(it){ it.qty--; if(it.qty<=0) removeFromCart(id); else saveCart(cart);} }
+    function renderCartCount(){ 
+      const c = cartCount();
+      cartCountEl.textContent = c; 
+      cartCountFooter.textContent = c;
+      miniCartCount.textContent = c;
+    }
 
-  // expose small helper to window for inline onclicks
-  window.incrementQty = incrementQty;
-  window.decrementQty = decrementQty;
-  window.removeFromCart = removeFromCart;
+    function renderCartItems(){
+      const cart = readCart();
+      if(cart.length===0){ cartItemsEl.innerHTML = '<div class="small">Votre panier est vide.</div>'; cartTotalEl.textContent='0 €'; return; }
+      cartItemsEl.innerHTML = cart.map(i=>`
+        <div class="cart-item">
+          <div>
+            <div style="font-weight:700">${i.name}</div>
+            <div class="small">${i.price} €</div>
+          </div>
+          <div class="qty">
+            <button class="btn-outline" onclick="decrementQty('${i.id}')">-</button>
+            <div>${i.qty}</div>
+            <button class="btn-outline" onclick="incrementQty('${i.id}')">+</button>
+            <button class="btn-outline" onclick="removeFromCart('${i.id}')">✕</button>
+          </div>
+        </div>`).join('');
+      cartTotalEl.textContent = cartTotal() + ' €';
+    }
 
-  // --- PRODUCT MODAL & INTERACTIONS (Fade + Blur animation style C) ---
-  const cards = document.querySelectorAll('.card');
-  const modalBg = document.getElementById('modal-bg');
-  const modal = document.getElementById('modal');
-  const modalImg = document.getElementById('modal-img');
-  const modalName = document.getElementById('modal-name');
-  const modalDesc = document.getElementById('modal-desc');
-  const modalPrice = document.getElementById('modal-price');
-  const btnAdd = document.getElementById('btn-add');
+    function incrementQty(id){ const cart = readCart(); const it = cart.find(x=>x.id===id); if(it){ it.qty++; saveCart(cart);} }
+    function decrementQty(id){ const cart = readCart(); const it = cart.find(x=>x.id===id); if(it){ it.qty--; if(it.qty<=0) removeFromCart(id); else saveCart(cart);} }
+    window.incrementQty = incrementQty;
+    window.decrementQty = decrementQty;
+    window.removeFromCart = removeFromCart;
 
-  let currentProduct = null;
+    // --- PRODUCT MODAL ---
+    const cards = document.querySelectorAll('.card');
+    const modalBg = document.getElementById('modal-bg');
+    const modal = document.getElementById('modal');
+    const modalImg = document.getElementById('modal-img');
+    const modalName = document.getElementById('modal-name');
+    const modalDesc = document.getElementById('modal-desc');
+    const modalPrice = document.getElementById('modal-price');
+    const btnAdd = document.getElementById('btn-add');
+    let currentProduct = null;
 
-  cards.forEach(card=>{
-    card.addEventListener('click', ()=> openProduct(card));
-  });
+    cards.forEach(card=>{ card.addEventListener('click', ()=> openProduct(card)); });
 
-  function openProduct(card){
-    // set current
-    currentProduct = {
-      id: card.dataset.id,
-      name: card.dataset.name,
-      price: parseFloat(card.dataset.price),
-      image: card.dataset.image,
-      desc: card.dataset.desc
-    };
+    function openProduct(card){
+      currentProduct = {
+        id: card.dataset.id,
+        name: card.dataset.name,
+        price: parseFloat(card.dataset.price),
+        image: card.dataset.image,
+        desc: card.dataset.desc
+      };
+      modalImg.src = currentProduct.image;
+      modalName.textContent = currentProduct.name;
+      modalDesc.textContent = currentProduct.desc;
+      modalPrice.textContent = currentProduct.price + ' €';
+      modalBg.style.display = 'flex';
+      requestAnimationFrame(()=> modal.classList.add('show'));
+    }
 
-    // set modal content
-    modalImg.src = currentProduct.image;
-    modalName.textContent = currentProduct.name;
-    modalDesc.textContent = currentProduct.desc;
-    modalPrice.textContent = currentProduct.price + ' €';
+    function closeModal(){
+      modal.classList.remove('show');
+      setTimeout(()=> modalBg.style.display = 'none', 300);
+    }
 
-    // show modal with fade+blur effect
-    modalBg.style.display = 'flex';
-    // small timeout to allow transition
-    requestAnimationFrame(()=> modal.classList.add('show'));
-  }
-
-  function closeModal(){
-    modal.classList.remove('show');
-    // wait transition then hide bg
-    setTimeout(()=> modalBg.style.display = 'none', 300);
-  }
-
-  // add to cart button in modal
-  btnAdd.addEventListener('click', ()=>{
-    if(!currentProduct) return;
-    addToCart({ id: currentProduct.id, name: currentProduct.name, price: currentProduct.price, qty: 1 });
-    // feedback
-    btnAdd.textContent = 'Ajouté ✓';
-    setTimeout(()=> btnAdd.textContent = 'Ajouter au panier', 900);
-    renderCartCount();
-  });
-
-  // --- CART modal open/close ---
-  const cartModal = document.getElementById('cart-modal');
-  document.getElementById('open-cart').addEventListener('click', ()=>{
-    if(cartModal.style.display === 'block'){ cartModal.style.display='none'; }
-    else { renderCartItems(); cartModal.style.display='block'; }
-  });
-  document.getElementById('btn-clear').addEventListener('click', ()=>{
-    localStorage.removeItem(STORAGE_KEY);
-    renderCartCount(); renderCartItems();
-  });
-  document.getElementById('btn-checkout').addEventListener('click', ()=>{
-    alert('Paiement fictif — ce site est une démonstration de revente pour projet scolaire.');
-  });
-
-  // --- SEARCH filtering (simple) ---
-  document.getElementById('search').addEventListener('input', (e)=>{
-    const q = e.target.value.trim().toLowerCase();
-    document.querySelectorAll('.card').forEach(c=>{
-      const name = c.dataset.name.toLowerCase();
-      c.style.display = name.includes(q) ? '' : 'none';
+    btnAdd.addEventListener('click', ()=>{
+      if(!currentProduct) return;
+      addToCart({ id: currentProduct.id, name: currentProduct.name, price: currentProduct.price, qty: 1 });
+      btnAdd.textContent = 'Ajouté ✓';
+      setTimeout(()=> btnAdd.textContent = 'Ajouter au panier', 900);
     });
-  });
 
-  // init render
-  renderCartCount();
-  renderCartItems();
+    // --- CART modal open/close ---
+    const cartModal = document.getElementById('cart-modal');
+    document.getElementById('open-cart').addEventListener('click', ()=>{ cartModal.style.display = cartModal.style.display==='block'?'none':'block'; renderCartItems(); });
+    document.getElementById('open-cart-footer').addEventListener('click', ()=>{ cartModal.style.display = cartModal.style.display==='block'?'none':'block'; renderCartItems(); });
+    document.getElementById('mini-cart').addEventListener('click', ()=>{ cartModal.style.display = cartModal.style.display==='block'?'none':'block'; renderCartItems(); });
+    document.getElementById('btn-clear').addEventListener('click', ()=>{ localStorage.removeItem(STORAGE_KEY); renderCartCount(); renderCartItems(); });
+    document.getElementById('btn-checkout').addEventListener('click', ()=>{ alert('Paiement fictif — ce site est une démonstration de revente pour projet scolaire.'); });
 
-  // close modal on outside click or Esc
-  modalBg.addEventListener('click', (ev)=>{
-    if(ev.target === modalBg) closeModal();
-  });
-  document.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ closeModal(); cartModal.style.display='none'; } });
+    // --- SEARCH ---
+    document.getElementById('search').addEventListener('input', (e)=>{
+      const q = e.target.value.trim().toLowerCase();
+      document.querySelectorAll('.card').forEach(c=>{
+        const name = c.dataset.name.toLowerCase();
+        c.style.display = name.includes(q) ? '' : 'none';
+      });
+    });
 
-  // NOTE: To change product images: edit the data-image="URL" attribute and the <img src="..."> inside each .card.
-  // Example: <div class="card" data-image="https://i.imgur.com/abc.jpg"> <img src="https://i.imgur.com/abc.jpg">
-</script>
+    // --- CLOSE MODAL ---
+    modalBg.addEventListener('click', (ev)=>{ if(ev.target === modalBg) closeModal(); });
+    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ closeModal(); cartModal.style.display='none'; } });
 
+    renderCartCount();
+    renderCartItems();
+  </script>
 </body>
 </html>
