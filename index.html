@@ -20,6 +20,7 @@ header nav a{font-size:16px;color:var(--white);}
 .card img{width:100%;height:260px;object-fit:cover;border-radius:10px;}
 .card h3{margin:10px 0 0;font-size:16px;}
 .price{color:var(--white);font-weight:800;margin-top:6px;}
+.info-text{max-width:1200px;margin:20px auto 0;padding:0 4%;color:var(--muted);}
 .modal-bg{display:none;position:fixed;inset:0;z-index:80;align-items:center;justify-content:center;background:rgba(0,0,0,0.55);}
 .modal{width:92%;max-width:800px;background:var(--white);color:#000;border-radius:14px;padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:18px;transform:translateY(18px) scale(.96);opacity:0;transition:all .36s cubic-bezier(.2,.9,.2,1);}
 .modal.show{transform:translateY(0) scale(1);opacity:1;}
@@ -51,12 +52,15 @@ header nav a{font-size:16px;color:var(--white);}
 </header>
 
 <section id="home">
+  <div class="info-text">
+    <p>Découvrez nos produits de luxe actuellement en vente : vêtements, accessoires, montres et sacs des plus grandes marques.</p>
+  </div>
   <div class="products" id="products"></div>
 </section>
 
 <section id="about" style="display:none;max-width:800px;margin:40px auto;padding:0 4%;">
   <h1>À propos</h1>
-  <p class="small">T&H est un projet en NSI réalisé par Hafsi et Tiago. Ce site est une démonstration de plateforme de revente de luxe.</p>
+  <p class="small">Projet NSI</p>
 </section>
 
 <div class="modal-bg" id="modal-bg">
