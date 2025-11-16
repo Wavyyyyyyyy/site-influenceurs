@@ -6,16 +6,18 @@
 <title>T&H — Revente de luxe</title>
 <style>
 :root{
-  --bg:#0b0b0b; --card:#1a1a1a; --muted:#bdbdbd; --white:#ffffff; --accent:#d4af37; --radius:12px;
+  --bg:#0b0b0b; --card:#1a1a1a; --muted:#bdbdbd; --white:#fff; --accent:#d4af37; --radius:12px;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:Inter, Helvetica, Arial, sans-serif;background:var(--bg);color:var(--white);}
-a{text-decoration:none;color:inherit;}
+a{text-decoration:none;color:inherit;cursor:pointer;}
 header{display:flex;justify-content:space-between;align-items:center;padding:20px 4%;border-bottom:1px solid rgba(255,255,255,0.1);}
 .brand{font-family:Georgia, serif;font-size:28px;font-weight:700;color:var(--accent);}
 .nav{display:flex;gap:20px;}
 .nav a{color:var(--white);font-weight:600;}
-.products{max-width:1200px;margin:40px auto;padding:0 4%;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;}
+.section{display:none;max-width:1200px;margin:40px auto;padding:0 4%;}
+.section.active{display:block;}
+.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;}
 .card{background:var(--card);border-radius:var(--radius);padding:12px;cursor:pointer;transition:0.3s;overflow:hidden;border:1px solid rgba(255,255,255,0.05);}
 .card:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 20px 40px rgba(0,0,0,0.6);}
 .card img{width:100%;height:260px;object-fit:cover;border-radius:10px;filter:grayscale(10%) contrast(105%);}
@@ -32,14 +34,12 @@ header{display:flex;justify-content:space-between;align-items:center;padding:20p
 .btn-outline{background:transparent;border:1px solid var(--accent);color:var(--accent);padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:700;}
 .btn-primary{background:var(--accent);color:#000;border:none;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:800;}
 .cart-modal{position:fixed;right:20px;top:20px;width:360px;background:var(--card);color:#fff;border-radius:12px;padding:14px;box-shadow:0 30px 60px rgba(0,0,0,0.7);z-index:95;display:none;}
-.cart-modal h3{margin-bottom:10px;}
 .cart-items{max-height:320px;overflow:auto;margin-top:8px;}
 .cart-item{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.1);}
 .qty{display:flex;gap:6px;align-items:center;}
 .small{font-size:13px;color:var(--muted);}
 .cart-btn{background:var(--accent);color:#000;padding:8px 14px;border-radius:999px;font-weight:700;border:none;cursor:pointer;position:relative;}
 .cart-count{background:#ff3b30;color:#fff;padding:2px 8px;border-radius:999px;margin-left:8px;font-size:12px;font-weight:800;}
-#mini-cart{position:fixed;bottom:20px;right:20px;z-index:99;}
 @media(max-width:900px){.modal{grid-template-columns:1fr;padding:16px}.modal img{height:240px}.cart-modal{width:92%;right:4%;top:auto;bottom:20px}}
 </style>
 </head>
@@ -48,88 +48,26 @@ header{display:flex;justify-content:space-between;align-items:center;padding:20p
 <header>
   <div class="brand">T&H</div>
   <nav class="nav">
-    <a href="index.html">Accueil</a>
-    <a href="about.html">À propos</a>
-    <a href="#" id="open-cart">Panier <span class="cart-count" id="cart-count">0</span></a>
+    <a onclick="showSection('home')">Accueil</a>
+    <a onclick="showSection('about')">À propos</a>
+    <a onclick="toggleCart()">Panier <span class="cart-count" id="cart-count">0</span></a>
   </nav>
 </header>
 
-<section class="products" id="products">
-  <!-- Exemple de produits -->
-  <div class="card" data-id="lv-bonnet" data-name="Bonnet Louis Vuitton" data-price="350" data-image="https://fr.louisvuitton.com/images/is/image/lv/1/PP_VP_L/louis-vuitton-bonnet-neo-petit-damier--M77985_PM2_Front%20view.png?wid=2400&hei=2400" data-desc="Bonnet de luxe en laine premium.">
-    <img src="https://fr.louisvuitton.com/images/is/image/lv/1/PP_VP_L/louis-vuitton-bonnet-neo-petit-damier--M77985_PM2_Front%20view.png?wid=2400&hei=2400" alt="">
-    <h3>Bonnet LV</h3>
-    <div class="price">350 €</div>
-  </div>
-
-  <div class="card" data-id="gucci-bag" data-name="Sac Gucci GG" data-price="1800" data-image="https://media.gucci.com/style/White_Center_0_0_150x150/1715076904/792080_FADJQ_1185_001_100_0000_Light-sac-a-dosgg-black-grand-format.jpg" data-desc="Sac en cuir Gucci avec logo GG.">
-    <img src="https://media.gucci.com/style/White_Center_0_0_150x150/1715076904/792080_FADJQ_1185_001_100_0000_Light-sac-a-dosgg-black-grand-format.jpg" alt="">
-    <h3>Sac Gucci GG</h3>
-    <div class="price">1800 €</div>
-  </div>
-
-  <div class="card" data-id="rolex-submariner" data-name="Montre Rolex Submariner" data-price="12500" data-image="https://medias.collectorsquare.com/images/products/425073/00pp-g-montre-rolex-submariner-date-en-acier-ref-rolex-116610-vers-2010.jpg" data-desc="Montre Rolex Submariner en acier, modèle iconique et intemporel.">
-    <img src="https://medias.collectorsquare.com/images/products/425073/00pp-g-montre-rolex-submariner-date-en-acier-ref-rolex-116610-vers-2010.jpg" alt="">
-    <h3>Montre Rolex</h3>
-    <div class="price">12 500 €</div>
-  </div>
-
-  <div class="card" data-id="hermes-birkin" data-name="Sac Hermès Birkin" data-price="9800" data-image="https://www.lesfoliesdeugenie.fr/cdn/shop/files/3B3EC089-9174-43E3-B467-2BA7995E937C.jpg?v=1758041349&width=1100" data-desc="Sac Hermès Birkin en cuir de haute qualité, symbole de luxe et élégance.">
-    <img src="https://www.lesfoliesdeugenie.fr/cdn/shop/files/3B3EC089-9174-43E3-B467-2BA7995E937C.jpg?v=1758041349&width=1100" alt="">
-    <h3>Sac Hermès</h3>
-    <div class="price">9 800 €</div>
-  </div>
-
-  <div class="card" data-id="dior-sunglasses" data-name="Lunettes de soleil Dior" data-price="450" data-image="https://assets2.nuanceaudio.com/cdn-record-files-pi/7d54dc3b-8d86-4dd1-b20e-b16f00e7f713/7ecda61c-a1ce-4f9a-b8e9-b16f00eb45a0/0AW5001__04__P21__shad__qt.png?impolicy=NUA_resize&wid=900&bgc=%23F6F6F6" data-desc="Lunettes de soleil Dior au design moderne et élégant.">
-    <img src="https://assets2.nuanceaudio.com/cdn-record-files-pi/7d54dc3b-8d86-4dd1-b20e-b16f00e7f713/7ecda61c-a1ce-4f9a-b8e9-b16f00eb45a0/0AW5001__04__P21__shad__qt.png?impolicy=NUA_resize&wid=900&bgc=%23F6F6F6" alt="">
-    <h3>Lunettes Dior</h3>
-    <div class="price">450 €</div>
-  </div>
-
-  <div class="card" data-id="louboutin-shoes" data-name="Chaussures Christian Louboutin" data-price="850" data-image="https://eu.christianlouboutin.com/media/catalog/product/cache/2687d9ba4029f1eb6acb91746b133704/3/2/3250025b439-3250025b439-main_image-ecommerce-christianlouboutin-missz-3250025_b439_1_1200x1200_202507100300.jpg" data-desc="Chaussures Christian Louboutin iconiques avec semelle rouge.">
-    <img src="https://eu.christianlouboutin.com/media/catalog/product/cache/2687d9ba4029f1eb6acb91746b133704/3/2/3250025b439-3250025b439-main_image-ecommerce-christianlouboutin-missz-3250025_b439_1_1200x1200_202507100300.jpg" alt="">
-    <h3>Chaussures Louboutin</h3>
-    <div class="price">850 €</div>
-  </div>
-
-  <div class="card" data-id="moncler-jacket" data-name="Veste Moncler" data-price="1250" data-image="https://www.net-a-porter.com/variants/images/46376663162953284/in/w2000_q60.jpg" data-desc="Veste Moncler chaude et élégante, parfaite pour l’hiver.">
-    <img src="https://www.net-a-porter.com/variants/images/46376663162953284/in/w2000_q60.jpg" alt="">
-    <h3>Veste Moncler</h3>
-    <div class="price">1 250 €</div>
-  </div>
-
-  <div class="card" data-id="prada-pouch" data-name="Pochette Prada" data-price="980" data-image="https://www.prada.com/content/dam/pradabkg_products/2/2NA/2NA819/PN9F0002/2NA819_PN9_F0002_SLF.jpg/_jcr_content/renditions/cq5dam.web.hebebed.1000.1000.jpg" data-desc="Pochette Prada en cuir avec design épuré et luxueux.">
-    <img src="https://www.prada.com/content/dam/pradabkg_products/2/2NA/2NA819/PN9F0002/2NA819_PN9_F0002_SLF.jpg/_jcr_content/renditions/cq5dam.web.hebebed.1000.1000.jpg" alt="">
-    <h3>Pochette Prada</h3>
-    <div class="price">980 €</div>
-  </div>
-
-  <div class="card" data-id="lv-scarf" data-name="Écharpe Louis Vuitton" data-price="420" data-image="https://fr.louisvuitton.com/images/is/image/lv/1/PP_VP_L/louis-vuitton-echarpe-monogram-classic--M70520_PM2_Front%20view.png?wid=2400&hei=2400" data-desc="Écharpe Louis Vuitton Monogram classique, chaude et élégante.">
-    <img src="https://fr.louisvuitton.com/images/is/image/lv/1/PP_VP_L/louis-vuitton-echarpe-monogram-classic--M70520_PM2_Front%20view.png?wid=2400&hei=2400" alt="">
-    <h3>Écharpe LV</h3>
-    <div class="price">420 €</div>
-  </div>
-
-  <div class="card" data-id="balenciaga-hoodie" data-name="Hoodie Balenciaga" data-price="650" data-image="https://balenciaga.dam.kering.com/asset/d87f0aa5-3044-4164-95c1-110ff79946a0/eCom/767877TSV889374_F.jpg?v=2" data-desc="Sweat à capuche Balenciaga oversize.">
-    <img src="https://balenciaga.dam.kering.com/asset/d87f0aa5-3044-4164-95c1-110ff79946a0/eCom/767877TSV889374_F.jpg?v=2" alt="">
-    <h3>Hoodie Balenciaga</h3>
-    <div class="price">650 €</div>
-  </div>
-
-  <div class="card" data-id="chanel-bag" data-name="Sac Chanel Classic" data-price="4200" data-image="https://www.chanel.com/images///f_auto,q_auto:good,dpr_1.1/w_1920/-9555559284766.jpg" data-desc="Sac iconique Chanel Classic Flap.">
-    <img src="https://www.chanel.com/images///f_auto,q_auto:good,dpr_1.1/w_1920/-9555559284766.jpg" alt="">
-    <h3>Sac Chanel</h3>
-    <div class="price">4200 €</div>
-  </div>
-
-  <div class="card" data-id="prada-shoes" data-name="Chaussures Prada" data-price="890" data-image="https://www.prada.com/content/dam/pradabkg_products/4/4E3/4E3400/ASZF0QKD/4E3400_ASZ_F0QKD_F_G000_SLR.jpg/_jcr_content/renditions/cq5dam.web.hebebed.1000.1000.jpg" data-desc="Chaussures en cuir Prada élégantes.">
-    <img src="https://www.prada.com/content/dam/pradabkg_products/4/4E3/4E3400/ASZF0QKD/4E3400_ASZ_F0QKD_F_G000_SLR.jpg/_jcr_content/renditions/cq5dam.web.hebebed.1000.1000.jpg" alt="">
-    <h3>Chaussures Prada</h3>
-    <div class="price">890 €</div>
+<!-- Sections -->
+<section class="section active" id="home">
+  <h1>Nos Produits de Luxe</h1>
+  <div class="products" id="products">
+    <!-- Les produits seront injectés par JS -->
   </div>
 </section>
 
-<!-- Modal -->
+<section class="section" id="about">
+  <h1>À propos de T&H</h1>
+  <p style="margin-top:20px;color:var(--muted);font-size:16px;">Bienvenue chez T&H, votre plateforme de revente de produits de luxe authentiques. Nous sélectionnons uniquement des articles de marques prestigieuses pour vous offrir une expérience unique.</p>
+</section>
+
+<!-- Modal produit -->
 <div class="modal-bg" id="modal-bg">
   <div class="modal" id="modal">
     <div><img id="modal-img" src="" alt=""></div>
@@ -158,53 +96,58 @@ header{display:flex;justify-content:space-between;align-items:center;padding:20p
   </div>
 </div>
 
-<button id="mini-cart" class="cart-btn">🛒 <span id="mini-cart-count">0</span></button>
-
 <script>
-// Gestion du panier
-const STORAGE_KEY = 'th_cart_v2';
-function readCart(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||[]}catch(e){return[]}}
-function saveCart(cart){localStorage.setItem(STORAGE_KEY,JSON.stringify(cart));renderCartCount();renderCartItems();}
+// Données produits
+const products = [
+  {id:"lv-bonnet", name:"Bonnet Louis Vuitton", price:350, image:"https://fr.louisvuitton.com/images/is/image/lv/1/PP_VP_L/louis-vuitton-bonnet-neo-petit-damier--M77985_PM2_Front%20view.png?wid=2400&hei=2400", desc:"Bonnet de luxe en laine premium."},
+  {id:"gucci-bag", name:"Sac Gucci GG", price:1800, image:"https://media.gucci.com/style/White_Center_0_0_150x150/1715076904/792080_FADJQ_1185_001_100_0000_Light-sac-a-dosgg-black-grand-format.jpg", desc:"Sac en cuir Gucci avec logo GG."},
+  {id:"rolex-submariner", name:"Montre Rolex Submariner", price:12500, image:"https://medias.collectorsquare.com/images/products/425073/00pp-g-montre-rolex-submariner-date-en-acier-ref-rolex-116610-vers-2010.jpg", desc:"Montre Rolex Submariner en acier, modèle iconique et intemporel."},
+  {id:"hermes-birkin", name:"Sac Hermès Birkin", price:9800, image:"https://www.lesfoliesdeugenie.fr/cdn/shop/files/3B3EC089-9174-43E3-B467-2BA7995E937C.jpg?v=1758041349&width=1100", desc:"Sac Hermès Birkin en cuir de haute qualité, symbole de luxe et élégance."},
+  {id:"dior-sunglasses", name:"Lunettes de soleil Dior", price:450, image:"https://assets2.nuanceaudio.com/cdn-record-files-pi/7d54dc3b-8d86-4dd1-b20e-b16f00e7f713/7ecda61c-a1ce-4f9a-b8e9-b16f00eb45a0/0AW5001__04__P21__shad__qt.png?impolicy=NUA_resize&wid=900&bgc=%23F6F6F6", desc:"Lunettes de soleil Dior au design moderne et élégant."},
+  {id:"louboutin-shoes", name:"Chaussures Christian Louboutin", price:850, image:"https://eu.christianlouboutin.com/media/catalog/product/cache/2687d9ba4029f1eb6acb91746b133704/3/2/3250025b439-3250025b439-main_image-ecommerce-christianlouboutin-missz-3250025_b439_1_1200x1200_202507100300.jpg", desc:"Chaussures Christian Louboutin iconiques avec semelle rouge."},
+  {id:"moncler-jacket", name:"Veste Moncler", price:1250, image:"https://www.net-a-porter.com/variants/images/46376663162953284/in/w2000_q60.jpg", desc:"Veste Moncler chaude et élégante, parfaite pour l’hiver."},
+  {id:"prada-pouch", name:"Pochette Prada", price:980, image:"https://www.prada.com/content/dam/pradabkg_products/2/2NA/2NA819/PN9F0002/2NA819_PN9_F0002_SLF.jpg/_jcr_content/renditions/cq5dam.web.hebebed.1000.1000.jpg", desc:"Pochette Prada en cuir avec design épuré et luxueux."},
+  {id:"lv-scarf", name:"Écharpe Louis Vuitton", price:420, image:"https://fr.louisvuitton.com/images/is/image/lv/1/PP_VP_L/louis-vuitton-echarpe-monogram-classic--M70520_PM2_Front%20view.png?wid=2400&hei=2400", desc:"Écharpe Louis Vuitton Monogram classique, chaude et élégante."},
+  {id:"balenciaga-hoodie", name:"Hoodie Balenciaga", price:650, image:"https://balenciaga.dam.kering.com/asset/d87f0aa5-3044-4164-95c1-110ff79946a0/eCom/767877TSV889374_F.jpg?v=2", desc:"Sweat à capuche Balenciaga oversize."},
+  {id:"chanel-bag", name:"Sac Chanel Classic", price:4200, image:"https://www.chanel.com/images///f_auto,q_auto:good,dpr_1.1/w_1920/-9555559284766.jpg", desc:"Sac iconique Chanel Classic Flap."},
+  {id:"prada-shoes", name:"Chaussures Prada", price:890, image:"https://www.prada.com/content/dam/pradabkg_products/4/4E3/4E3400/ASZF0QKD/4E3400_ASZ_F0QKD_F_G000_SLR.jpg/_jcr_content/renditions/cq5dam.web.hebebed.1000.1000.jpg", desc:"Chaussures en cuir Prada élégantes."}
+];
 
-function addToCart(item){
-  const cart = readCart();
-  const existing = cart.find(i=>i.id===item.id);
-  if(existing) existing.qty+=item.qty;
-  else cart.push(item);
-  saveCart(cart);
+// Render produits
+const productsContainer = document.getElementById('products');
+products.forEach(p=>{
+  const card = document.createElement('div'); card.className='card';
+  card.dataset.id=p.id; card.dataset.name=p.name; card.dataset.price=p.price; card.dataset.image=p.image; card.dataset.desc=p.desc;
+  card.innerHTML=`<img src="${p.image}" alt=""><h3>${p.name}</h3><div class="price">${p.price} €</div>`;
+  productsContainer.appendChild(card);
+});
+
+// SPA navigation
+function showSection(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
 }
 
-function removeFromCart(id){
-  let cart = readCart();
-  cart = cart.filter(i=>i.id!==id);
-  saveCart(cart);
-}
-
-function clearCart(){saveCart([]);}
-
-function renderCartItems(){
-  const container = document.getElementById('cart-items');
-  container.innerHTML='';
-  const cart = readCart();
-  let total = 0;
+// Panier
+let cart = JSON.parse(localStorage.getItem('th_cart_v2')||'[]');
+function saveCart(){localStorage.setItem('th_cart_v2',JSON.stringify(cart));renderCart();}
+function renderCart(){
+  const container = document.getElementById('cart-items'); container.innerHTML=''; let total=0;
   cart.forEach(i=>{
-    const div = document.createElement('div'); div.className='cart-item';
+    const div=document.createElement('div'); div.className='cart-item';
     div.innerHTML=`<div>${i.name} <span class="small">x${i.qty}</span></div><div>${i.price*i.qty} € <button class="btn-outline" onclick="removeFromCart('${i.id}')">✖</button></div>`;
-    container.appendChild(div);
-    total+=i.price*i.qty;
+    container.appendChild(div); total+=i.price*i.qty;
   });
   document.getElementById('cart-total').textContent=total+' €';
-  document.getElementById('mini-cart-count').textContent=cart.reduce((a,b)=>a+b.qty,0);
-}
-
-function renderCartCount(){
-  const cart = readCart();
   document.getElementById('cart-count').textContent=cart.reduce((a,b)=>a+b.qty,0);
 }
+function addToCart(item){const exist=cart.find(i=>i.id===item.id); if(exist) exist.qty+=1; else cart.push(item); saveCart();}
+function removeFromCart(id){cart=cart.filter(i=>i.id!==id); saveCart();}
+function clearCart(){cart=[];saveCart();}
+function toggleCart(){const c=document.getElementById('cart-modal'); c.style.display=c.style.display==='block'?'none':'block';}
+renderCart();
 
-renderCartItems();
-
-// Modal produit
+// Modal
 const cards = document.querySelectorAll('.card');
 const modalBg = document.getElementById('modal-bg');
 const modalImg = document.getElementById('modal-img');
@@ -213,31 +156,24 @@ const modalDesc = document.getElementById('modal-desc');
 const modalPrice = document.getElementById('modal-price');
 let selectedItem = null;
 
-cards.forEach(card=>{
-  card.addEventListener('click',()=>{
+document.addEventListener('click',e=>{
+  if(e.target.closest('.card')){
+    const card = e.target.closest('.card');
     modalImg.src=card.dataset.image;
     modalName.textContent=card.dataset.name;
     modalDesc.textContent=card.dataset.desc;
     modalPrice.textContent=card.dataset.price+' €';
-    selectedItem = {id:card.dataset.id,name:card.dataset.name,price:parseFloat(card.dataset.price),qty:1};
-    modalBg.style.display='flex';
-    setTimeout(()=>document.getElementById('modal').classList.add('show'),10);
-  });
+    selectedItem={id:card.dataset.id,name:card.dataset.name,price:parseFloat(card.dataset.price),qty:1};
+    modalBg.style.display='flex'; setTimeout(()=>document.getElementById('modal').classList.add('show'),10);
+  }
 });
 
 document.getElementById('btn-add').addEventListener('click',()=>{
   addToCart(selectedItem);
   closeModal();
 });
+function closeModal(){document.getElementById('modal').classList.remove('show'); setTimeout(()=>modalBg.style.display='none',300);}
 
-function closeModal(){
-  document.getElementById('modal').classList.remove('show');
-  setTimeout(()=>modalBg.style.display='none',300);
-}
-
-// Panier toggle
-const cartModal = document.getElementById('cart-modal');
-document.getElementById('open-cart').addEventListener('click',()=>cartModal.style.display=cartModal.style.display==='block'?'none':'block');
 document.getElementById('btn-clear').addEventListener('click',clearCart);
 document.getElementById('btn-checkout').addEventListener('click',()=>alert('Paiement non implémenté'));
 </script>
