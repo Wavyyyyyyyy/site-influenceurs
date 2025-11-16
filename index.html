@@ -99,17 +99,17 @@ const STORAGE_KEY='th_cart_v2';
 let cart=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');
 
 const products=[
-  {id:'lv-bonnet',name:'Bonnet LV',price:350,image:'https://fr.louisvuitton.com/images/is/image/lv/1/PP_VP_L/louis-vuitton-bonnet-neo-petit-damier--M77985_PM2_Front%20view.png?wid=2400&hei=2400',desc:'Bonnet de luxe en laine premium.'},
-  {id:'gucci-bag',name:'Sac Gucci GG',price:1800,image:'https://media.gucci.com/style/White_Center_0_0_150x150/1715076904/792080_FADJQ_1185_001_100_0000_Light-sac-a-dosgg-black-grand-format.jpg',desc:'Sac en cuir Gucci avec logo GG.'},
+  {id:'lv-bonnet',name:'Bonnet LV',price:350,image:'https://images.stockx.com/images/Louis-Vuitton-LV-Headline-Beanie-Black.jpg?fit=fill&bg=FFFFFF&w=480&h=320&q=60&dpr=1&trim=color&updated_at=1665595053',desc:'Bonnet de luxe en laine premium.'},
+  {id:'gucci-bag',name:'Sac Gucci GG',price:1800,image:'https://media.gucci.com/style/DarkGray_Center_0_0_1200x1200/1746030730/834466_FAEOJ_9747_001_100_0000_Light-sac-a-dos-ophidia-moyen-format.jpg',desc:'Sac en cuir Gucci avec logo GG.'},
   {id:'rolex-submariner',name:'Montre Rolex Submariner',price:12500,image:'https://medias.collectorsquare.com/images/products/425073/00pp-g-montre-rolex-submariner-date-en-acier-ref-rolex-116610-vers-2010.jpg',desc:'Montre Rolex Submariner en acier.'},
   {id:'hermes-birkin',name:'Sac Hermès',price:9800,image:'https://www.lesfoliesdeugenie.fr/cdn/shop/files/3B3EC089-9174-43E3-B467-2BA7995E937C.jpg?v=1758041349&width=1100',desc:'Sac Hermès Birkin en cuir de haute qualité.'},
   {id:'dior-sunglasses',name:'Lunettes Dior',price:450,image:'https://assets2.nuanceaudio.com/cdn-record-files-pi/7d54dc3b-8d86-4dd1-b20e-b16f00e7f713/7ecda61c-a1ce-4f9a-b8e9-b16f00eb45a0/0AW5001__04__P21__shad__qt.png?impolicy=NUA_resize&wid=900&bgc=%23F6F6F6',desc:'Lunettes de soleil Dior.'},
   {id:'louboutin-shoes',name:'Chaussures Louboutin',price:850,image:'https://eu.christianlouboutin.com/media/catalog/product/cache/2687d9ba4029f1eb6acb91746b133704/3/2/3250025b439-3250025b439-main_image-ecommerce-christianlouboutin-missz-3250025_b439_1_1200x1200_202507100300.jpg',desc:'Chaussures Christian Louboutin.'},
   {id:'moncler-jacket',name:'Veste Moncler',price:1250,image:'https://www.net-a-porter.com/variants/images/46376663162953284/in/w2000_q60.jpg',desc:'Veste Moncler chaude et élégante.'},
   {id:'prada-pouch',name:'Pochette Prada',price:980,image:'https://www.prada.com/content/dam/pradabkg_products/2/2NA/2NA819/PN9F0002/2NA819_PN9_F0002_SLF.jpg/_jcr_content/renditions/cq5dam.web.hebebed.1000.1000.jpg',desc:'Pochette Prada en cuir.'},
-  {id:'lv-scarf',name:'Écharpe LV',price:420,image:'https://fr.louisvuitton.com/images/is/image/lv/1/PP_VP_L/louis-vuitton-echarpe-monogram-classic--M70520_PM2_Front%20view.png?wid=2400&hei=2400',desc:'Écharpe Louis Vuitton Monogram.'},
+  {id:'lv-scarf',name:'Écharpe LV',price:420,image:'https://fr.louisvuitton.com/images/is/image/lv/1/PP_VP_L/louis-vuitton-echarpe-neo-petit-damier--M77988_PM1_Side%20view.jpg',desc:'Écharpe Louis Vuitton Monogram.'},
   {id:'balenciaga-hoodie',name:'Hoodie Balenciaga',price:650,image:'https://balenciaga.dam.kering.com/asset/d87f0aa5-3044-4164-95c1-110ff79946a0/eCom/767877TSV889374_F.jpg?v=2',desc:'Sweat à capuche Balenciaga.'},
-  {id:'chanel-bag',name:'Sac Chanel',price:4200,image:'https://www.chanel.com/images///f_auto,q_auto:good,dpr_1.1/w_1920/-9555559284766.jpg',desc:'Sac iconique Chanel Classic Flap.'},
+  {id:'chanel-bag',name:'Sac Chanel',price:4200,image:'https://www.chanel.com/images///f_auto//-9543206993950.jpg',desc:'Sac iconique Chanel Classic Flap.'},
   {id:'prada-shoes',name:'Chaussures Prada',price:890,image:'https://www.prada.com/content/dam/pradabkg_products/4/4E3/4E3400/ASZF0QKD/4E3400_ASZ_F0QKD_F_G000_SLR.jpg/_jcr_content/renditions/cq5dam.web.hebebed.1000.1000.jpg',desc:'Chaussures en cuir Prada élégantes.'},
 ];
 
