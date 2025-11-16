@@ -17,7 +17,6 @@ header{display:flex;align-items:center;justify-content:space-between;gap:20px;pa
 .brand{font-weight:700;font-size:28px;letter-spacing:1px;font-family:Georgia,serif;color:var(--accent)}
 .nav{display:flex;gap:14px;align-items:center}
 .nav a{padding:8px 12px;font-weight:600;}
-.search{padding:8px 12px;border-radius:20px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--white)}
 .cart-btn{background:var(--white);color:var(--bg);padding:8px 12px;border-radius:999px;font-weight:700;border:none;cursor:pointer;position:relative;overflow:hidden;}
 .cart-count{background:#ff3b30;color:#fff;padding:2px 8px;border-radius:999px;margin-left:8px;font-size:12px;font-weight:800;}
 
@@ -83,14 +82,12 @@ h1{font-family:Georgia,serif;font-size:44px;margin:10px 0}
       <p class="lead">T&H est une plateforme de revente de luxe spécialisée : chaque article est vérifié, authentique et proposé par des vendeurs sélectionnés.</p>
     </div>
   </div>
-  <div class="products" id="products">
-    <!-- Produits ajoutés par JS -->
-  </div>
+  <div class="products" id="products"></div>
 </section>
 
 <section class="section" id="about">
   <h1>À propos de T&H</h1>
-  <p style="margin-top:20px;color:var(--muted)">T&H est une plateforme de revente de luxe proposant uniquement des articles authentiques. Chaque produit est vérifié par nos soins.</p>
+  <p style="margin-top:20px;color:var(--muted)">Projet NSI réalisé par Hafsi et Tiago. Cette plateforme simule une boutique de revente de luxe pour démonstration scolaire.</p>
 </section>
 
 <!-- Modal -->
@@ -134,16 +131,14 @@ function showSection(id){
 
 // ================= Panier =================
 const STORAGE_KEY = 'th_cart_v2';
-function readCart(){return JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');}
-function saveCart(cart){localStorage.setItem(STORAGE_KEY,JSON.stringify(cart));renderCart();}
-let cart = readCart();
+let cart = JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');
 
+function saveCart(){localStorage.setItem(STORAGE_KEY,JSON.stringify(cart)); renderCart();}
 function renderCart(){
   const cartItemsEl = document.getElementById('cart-items');
   const cartTotalEl = document.getElementById('cart-total');
   const cartCountEl = document.getElementById('cart-count');
-  cartItemsEl.innerHTML = '';
-  let total=0;
+  cartItemsEl.innerHTML=''; let total=0;
   if(cart.length===0){cartItemsEl.innerHTML='<div class="small">Votre panier est vide.</div>';cartTotalEl.textContent='0 €';cartCountEl.textContent='0'; return;}
   cart.forEach(i=>{
     total+=i.price*i.qty;
@@ -165,16 +160,21 @@ function addToCart(item){
   const existing = cart.find(i=>i.id===item.id);
   if(existing) existing.qty+=1;
   else cart.push({...item,qty:1});
-  saveCart(cart);
+  saveCart();
 }
 
-function removeFromCart(id){cart = cart.filter(i=>i.id!==id); saveCart(cart);}
-function incrementQty(id){const i=cart.find(x=>x.id===id); if(i){i.qty++; saveCart(cart);}}
-function decrementQty(id){const i=cart.find(x=>x.id===id); if(i){i.qty--; if(i.qty<=0) removeFromCart(id); else saveCart(cart);}}
-function clearCart(){cart=[];saveCart(cart);}
+function removeFromCart(id){cart = cart.filter(i=>i.id!==id); saveCart();}
+function incrementQty(id){const i=cart.find(x=>x.id===id); if(i){i.qty++; saveCart();}}
+function decrementQty(id){const i=cart.find(x=>x.id===id); if(i){i.qty--; if(i.qty<=0) removeFromCart(id); else saveCart();}}
+function clearCart(){cart=[]; saveCart();}
 function toggleCart(){const cm=document.getElementById('cart-modal'); cm.style.display=cm.style.display==='block'?'none':'block';}
 document.getElementById('btn-clear').addEventListener('click',clearCart);
-document.getElementById('btn-checkout').addEventListener('click',()=>alert('Paiement fictif — ce site est une démonstration.'));
+document.getElementById('btn-checkout').addEventListener('click',()=>alert('Paiement fictif — projet NSI.'));
+
+window.addEventListener('click',e=>{
+  const cm=document.getElementById('cart-modal');
+  if(e.target===cm) cm.style.display='none';
+});
 
 // ================= Produits =================
 const productsData = [
@@ -183,7 +183,13 @@ const productsData = [
   {id:"rolex-submariner", name:"Montre Rolex Submariner", price:12500, image:"https://medias.collectorsquare.com/images/products/425073/00pp-g-montre-rolex-submariner-date-en-acier-ref-rolex-116610-vers-2010.jpg", desc:"Montre Rolex Submariner en acier."},
   {id:"hermes-birkin", name:"Sac Hermès Birkin", price:9800, image:"https://www.lesfoliesdeugenie.fr/cdn/shop/files/3B3EC089-9174-43E3-B467-2BA7995E937C.jpg?v=1758041349&width=1100", desc:"Sac Hermès Birkin en cuir de haute qualité."},
   {id:"dior-sunglasses", name:"Lunettes Dior", price:450, image:"https://assets2.nuanceaudio.com/cdn-record-files-pi/7d54dc3b-8d86-4dd1-b20e-b16f00e7f713/7ecda61c-a1ce-4f9a-b8e9-b16f00eb45a0/0AW5001__04__P21__shad__qt.png?impolicy=NUA_resize&wid=900&bgc=%23F6F6F6", desc:"Lunettes de soleil Dior au design moderne."},
-  {id:"louboutin-shoes", name:"Chaussures Louboutin", price:850, image:"https://eu.christianlouboutin.com/media/catalog/product/cache/2687d9ba4029f1eb6acb91746b133704/3/2/3250025b439-3250025b439-main_image-ecommerce-christianlouboutin-missz-3250025_b439_1_1200x1200_202507100300.jpg", desc:"Chaussures iconiques avec semelle rouge."}
+  {id:"louboutin-shoes", name:"Chaussures Louboutin", price:850, image:"https://eu.christianlouboutin.com/media/catalog/product/cache/2687d9ba4029f1eb6acb91746b133704/3/2/3250025b439-3250025b439-main_image-ecommerce-christianlouboutin-missz-3250025_b439_1_1200x1200_202507100300.jpg", desc:"Chaussures iconiques avec semelle rouge."},
+  {id:"moncler-jacket", name:"Veste Moncler", price:1250, image:"https://www.net-a-porter.com/variants/images/46376663162953284/in/w2000_q60.jpg", desc:"Veste Moncler chaude et élégante."},
+  {id:"prada-pouch", name:"Pochette Prada", price:980, image:"https://www.prada.com/content/dam/pradabkg_products/2/2NA/2NA819/PN9F0002/2NA819_PN9_F0002_SLF.jpg/_jcr_content/renditions/cq5dam.web.hebebed.1000.1000.jpg", desc:"Pochette Prada en cuir élégant."},
+  {id:"lv-scarf", name:"Écharpe Louis Vuitton", price:420, image:"https://fr.louisvuitton.com/images/is/image/lv/1/PP_VP_L/louis-vuitton-echarpe-monogram-classic--M70520_PM2_Front%20view.png?wid=2400&hei=2400", desc:"Écharpe Louis Vuitton Monogram classique."},
+  {id:"balenciaga-hoodie", name:"Hoodie Balenciaga", price:650, image:"https://balenciaga.dam.kering.com/asset/d87f0aa5-3044-4164-95c1-110ff79946a0/eCom/767877TSV889374_F.jpg?v=2", desc:"Sweat à capuche Balenciaga oversize."},
+  {id:"chanel-bag", name:"Sac Chanel Classic", price:4200, image:"https://www.chanel.com/images///f_auto,q_auto:good,dpr_1.1/w_1920/-9555559284766.jpg", desc:"Sac iconique Chanel Classic Flap."},
+  {id:"prada-shoes", name:"Chaussures Prada", price:890, image:"https://www.prada.com/content/dam/pradabkg_products/4/4E3/4E3400/ASZF0QKD/4E3400_ASZ_F0QKD_F_G000_SLR.jpg/_jcr_content/renditions/cq5dam.web.hebebed.1000.1000.jpg", desc:"Chaussures en cuir Prada élégantes."}
 ];
 
 const productsContainer = document.getElementById('products');
@@ -219,6 +225,10 @@ document.addEventListener('click',e=>{
 document.getElementById('btn-add').addEventListener('click',()=>{
   addToCart(currentProduct);
   closeModal();
+});
+
+modalBg.addEventListener('click',e=>{
+  if(e.target===modalBg) closeModal();
 });
 
 function closeModal(){modal.classList.remove('show'); setTimeout(()=>modalBg.style.display='none',300);}
